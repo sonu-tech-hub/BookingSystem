@@ -57,15 +57,30 @@ const VendorListings = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formDataToSend = new FormData();
+    formDataToSend.append('name', formData.name);
+    formDataToSend.append('type', formData.type);
+    formDataToSend.append('address[street]', formData.address.street);
+    formDataToSend.append('address[city]', formData.address.city);
+    formDataToSend.append('address[state]', formData.address.state);
+    formDataToSend.append('address[zip]', formData.address.zip);
+    formDataToSend.append('description', formData.description);
+    formDataToSend.append('facilities', formData.facilities.join(',')); // Join facilities array
+    formDataToSend.append('pricing', formData.pricing.toString());
+  
+    formData.images.forEach((image) => {
+      formDataToSend.append('images', image); // Append each image file
+    });
+  
     try {
-      await api.post('/listings', formData);
+      await api.post('/listings', formDataToSend);
       setShowCreateForm(false);
       window.location.reload(); // Simple reload for now
     } catch (err) {
+      console.log("this is the photot error", err);
       setError('Failed to create listing');
     }
   };
-
   if (loading) {
     return <div>Loading...</div>;
   }

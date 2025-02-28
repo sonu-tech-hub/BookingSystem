@@ -70,6 +70,7 @@ const getListingById = asyncHandler(async (req, res) => {
 // @access  Public
 const searchListings = asyncHandler(async (req, res) => {
   console.log("this is the result",req.query);
+  
   const { query } = req.query;
 
   if (!query) {
@@ -83,6 +84,7 @@ const searchListings = asyncHandler(async (req, res) => {
     res.json(listings);
   } catch (error) {
     res.status(500);
+    console.error("Error searching listings:", error); 
     throw new Error('Error searching listings');
   }
 });

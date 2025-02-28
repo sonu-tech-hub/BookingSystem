@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../utils/api"; 
 
-const Browse = () => {
+const Browser = () => {
   const [query, setQuery] = useState("");  // Store search input
   const [results, setResults] = useState([]);  // Store search results
   const [loading, setLoading] = useState(false);
@@ -40,6 +40,7 @@ const Browse = () => {
       } catch (err) {
         console.error("Error:", err);
         setError("Something went wrong. Please try again.");
+        console.log("this is the error bro", err);
         setLoading(false);
       }
     };
@@ -47,6 +48,7 @@ const Browse = () => {
     fetchResults();
   }, [debouncedQuery]);
 
+   
   return (
     <div className="max-w-4xl mx-auto p-4">
       
@@ -61,6 +63,7 @@ const Browse = () => {
             onChange={(e) => setQuery(e.target.value)}
             className="w-full p-2 border rounded-md shadow-sm"
             placeholder="Search for items..."
+            aria-label="Search for items"
           />
         </div>
         <button
@@ -97,4 +100,4 @@ const Browse = () => {
   );
 };
 
-export default Browse;
+export default Browser;

@@ -5,8 +5,8 @@ const ImageUpload = ({ onUpload }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const CLOUD_NAME = 'your_cloud_name'; // Replace with your Cloudinary cloud name
-  const UPLOAD_PRESET = 'your_upload_preset'; // Replace with your Cloudinary upload preset
+  const CLOUD_NAME = 'dcpv6tr6u'; // Replace with your Cloudinary cloud name
+  const UPLOAD_PRESET = 'chat-app-file'; // Replace with your Cloudinary upload preset
 
   const handleImageChange = async (e) => {
     const files = Array.from(e.target.files);
