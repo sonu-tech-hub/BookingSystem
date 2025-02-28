@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
+import api from "../utils/api"; 
 
 const Browse = () => {
   const [query, setQuery] = useState("");  // Store search input
@@ -30,8 +31,8 @@ const Browse = () => {
       setError("");
 
       try {
-        const response = await axios.post("https://your-backend-url.com/api/search", {
-          query: debouncedQuery,
+        const response = await api.get("/listings/search", {
+          params: { query: debouncedQuery },
         });
 
         setResults(response.data);  // Assuming backend returns an array of results
@@ -48,7 +49,7 @@ const Browse = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-4">
-      <h2 className="text-2xl font-bold text-center mb-4"> Hotels And Restro</h2>
+      
       
       <div className="mb-4 flex items-center">
         <div className="flex-1">

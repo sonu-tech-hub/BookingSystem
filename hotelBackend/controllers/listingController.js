@@ -65,6 +65,61 @@ const getListingById = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Search listings by name
+// @route   GET /api/listings/search
+// @access  Public
+const searchListings = asyncHandler(async (req, res) => {
+  console.log("this is the result",req.query);
+  const { query } = req.query;
+
+  if (!query) {
+    return res.status(400).json({ message: 'Search query is required' });
+  }
+
+  try {
+    const listings = await Listing.find({
+      name: { $regex: query, $options: 'i' }, // Case-insensitive search
+    });
+    res.json(listings);
+  } catch (error) {
+    res.status(500);
+    throw new Error('Error searching listings');
+  }
+});
+ 
+//  accecc dat basic of location and price and rating and 
+const FilterData = asyncHandler(async (req, res) => {
+  const { location, minPrice } = req.query; // Only location and minPrice
+
+ 
+
+  let filter = {};
+
+  if (location) {
+    filter['address.city'] = { $regex: location, $options: 'i' };
+  }
+
+  if (minPrice) {
+    if (!isNaN(minPrice)) {
+      filter.pricing = { $gte: Number(minPrice) };
+    } else {
+      return res.status(400).json({ message: "Invalid minPrice value" });
+    }
+  }
+
+
+  
+
+  try {
+    const listings = await Listing.find(filter);
+    res.json(listings);
+  } catch (error) {
+    console.error("Database Error:", error);
+    res.status(500).json({ message: "Database error occurred." });
+  }
+});
+
+
 // @desc    Update a listing
 // @route   PUT /api/listings/:id
 // @access  Private (Vendor)
@@ -117,7 +172,9 @@ const deleteListing = asyncHandler(async (req, res) => {
 module.exports = {
   createListing,
   getListings,
-  getListingById,
+  searchListings,
   updateListing,
   deleteListing,
+  FilterData,
+  getListingById
 };

@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import ListingCard from '../components/ListingCard';
 import api from '../utils/api';
+import Browser from '../components/Browser';
+import FilterComponent from '../components/Filter';
 
 const HomePage = () => {
   const [listings, setListings] = useState([]);
@@ -45,6 +47,8 @@ const HomePage = () => {
   return (
     <div>
       <Header />
+      <Browser />
+      <FilterComponent/>
       <div className="p-4">
         <h1 className="text-3xl font-semibold mb-4">Welcome to Hotel & Restaurant Booking</h1>
         <p>Explore our listings and book your next stay or meal.</p>

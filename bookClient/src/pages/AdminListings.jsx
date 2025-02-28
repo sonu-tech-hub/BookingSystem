@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 import ListingCard from '../components/ListingCard';
+import AdminUsers from './AdminUsers';
 
 const AdminListings = () => {
   const [listings, setListings] = useState([]);
@@ -47,6 +48,7 @@ const AdminListings = () => {
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">Manage Listings</h2>
+      <AdminUsers />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {listings.map((listing) => (
           <div key={listing._id} className="border p-4 rounded-lg">

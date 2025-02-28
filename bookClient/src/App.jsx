@@ -16,6 +16,7 @@ import CustomerReviews from './pages/CustomerReviews';
 import AdminListings from './pages/AdminListings';
 import AdminUsers from './pages/AdminUsers';
 
+
 function App() {
   return (
     <div className="min-h-screen bg-gray-50">
@@ -47,6 +48,7 @@ function App() {
         >
           <Route index element={<CustomerBookings />} />
           <Route path="bookings" element={<CustomerBookings />} />
+          
           <Route path="reviews" element={<CustomerReviews />} />
         </Route>
 

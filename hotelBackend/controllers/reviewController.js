@@ -34,6 +34,16 @@ const createReview = asyncHandler(async (req, res) => {
     throw new Error('Invalid review data');
   }
 });
+// @desc    Get all reviews for a customer
+// @route   GET /api/reviews/customer
+// @access  Private (Customer)
+const getReviewsByCustomer = asyncHandler(async (req, res) => {
+  const customerId = req.user._id;
+
+  const reviews = await Review.find({ customerId });
+
+  res.json(reviews);
+});
 
 // @desc    Get all reviews for a listing
 // @route   GET /api/reviews/:listingId
@@ -56,4 +66,5 @@ const getReviewsByListing = asyncHandler(async (req, res) => {
 module.exports = {
   createReview,
   getReviewsByListing,
+  getReviewsByCustomer
 };
