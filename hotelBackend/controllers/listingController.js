@@ -122,45 +122,54 @@ const FilterData = asyncHandler(async (req, res) => {
 });
 
 
-// @desc    Update a listing
+// @desc    Update a listing (Admin approval/rejection)
 // @route   PUT /api/listings/:id
-// @access  Private (Vendor)
+// @access  Private (Vendor and Admin)
 const updateListing = asyncHandler(async (req, res) => {
   const listing = await Listing.findById(req.params.id);
-  const { name, type, address, description, facilities, pricing, images } = req.body;
 
-  if (listing && listing.vendorId.toString() === req.user._id.toString()) {
-    listing.name = name || listing.name;
-    listing.type = type || listing.type;
-    listing.address = address || listing.address;
-    listing.description = description || listing.description;
-    listing.facilities = facilities || listing.facilities;
-    listing.pricing = pricing || listing.pricing;
-
-    if (images && images.length > 0) {
-      let uploadedImages = [];
-      for (const image of images) {
-        const result = await cloudinary.uploader.upload(image, {
-          folder: 'listings',
-        });
-        uploadedImages.push(result.secure_url);
-      }
-      listing.images = uploadedImages;
-    }
-
-    const updatedListing = await listing.save();
-    res.json(updatedListing);
-  } else {
-    res.status(404);
-    throw new Error('Listing not found or unauthorized');
+  if (!listing) {
+      res.status(404);
+      throw new Error('Listing not found');
   }
+
+  if (req.body.hasOwnProperty('approved')) {
+      // Admin approval/rejection
+      listing.approved = req.body.approved;
+  } else if (listing.vendorId.toString() === req.user._id.toString()) {
+      // Vendor update
+      const { name, type, address, description, facilities, pricing, images } = req.body;
+      listing.name = name || listing.name;
+      listing.type = type || listing.type;
+      listing.address = address || listing.address;
+      listing.description = description || listing.description;
+      listing.facilities = facilities || listing.facilities;
+      listing.pricing = pricing || listing.pricing;
+
+      if (images && images.length > 0) {
+          let uploadedImages = [];
+          for (const image of images) {
+              const result = await cloudinary.uploader.upload(image, {
+                  folder: 'listings',
+              });
+              uploadedImages.push(result.secure_url);
+          }
+          listing.images = uploadedImages;
+      }
+  } else{
+      res.status(401);
+      throw new Error('Not authorized');
+  }
+
+  const updatedListing = await listing.save();
+  res.json(updatedListing);
 });
 
 // @desc    Delete a listing
 // @route   DELETE /api/listings/:id
 // @access  Private (Vendor)
 const deleteListing = asyncHandler(async (req, res) => {
-  const listing = await Listing.findById(req.params.id);
+  const listing = await Listing.findByIdAndDelete(req.params.id);
 
   if (listing && listing.vendorId.toString() === req.user._id.toString()) {
     await listing.remove();

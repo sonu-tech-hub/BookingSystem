@@ -2,6 +2,7 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
+const { query } = require('express');
 
 // @desc    Register a new user
 // @route   POST /api/users
@@ -60,6 +61,42 @@ const authUser = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error('Invalid email or password');
   }
+  
+});
+// @desc    Get all users
+// @route   GET /api/users
+// @access  Private (Admin only)
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+  res.json(users);
 });
 
-module.exports = { registerUser, authUser };
+// @desc    Get a single user
+// @route   GET /api/users/:id
+// @access  Private (Admin only)
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findByIdAndUpdate(req.params.id,req.body);
+ 
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
+ 
+  res.json(user);
+});
+
+// deleteUser
+// @route   DELETE /api/users/:id
+// @access  Private (Admin only)
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+ 
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
+ 
+  res.json(user);
+}); 
+
+module.exports = { registerUser, authUser, getAllUsers ,updateUser, deleteUser};

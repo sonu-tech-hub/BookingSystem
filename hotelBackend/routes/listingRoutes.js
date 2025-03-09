@@ -40,20 +40,20 @@ const {
   FilterData,
   getListingById,
 } = require('../controllers/listingController');
-const { protect, vendor } = require('../middleware/authMiddleware');
+const { protect, vendor,admin } = require('../middleware/authMiddleware');
 router.get('/search', searchListings);
 router.get('/filter', FilterData);
 // Separate routes
-router.post('/', protect, vendor, createListing);
+router.post('/', protect, vendor,createListing);
 router.get('/', getListings);
 
 router
   .route('/:id')
   .get(getListingById)
-  .put(protect, vendor, updateListing)
-  .delete(protect, vendor, deleteListing);
+  
 
-
+router.route('/:id').put(protect, vendor,admin, updateListing);
+router.route('/:id').delete(protect, vendor,admin, deleteListing);
 
 
 module.exports = router;

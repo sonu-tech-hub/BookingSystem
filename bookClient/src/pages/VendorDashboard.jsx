@@ -13,7 +13,7 @@ const VendorDashboard = () => {
         <nav className="mb-4">
           {/* Add links to manage listings, bookings, etc. */}
         </nav>
-        <Outlet /> {/* To render nested routes */}
+        {/* <Outlet/ /> To render nested routes */}
       </div>
     </div>
   );

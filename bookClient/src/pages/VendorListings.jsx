@@ -18,7 +18,7 @@ const VendorListings = () => {
     pricing: 0,
     images: [],
   });
-
+  console.log(formData)
   useEffect(() => {
     const fetchListings = async () => {
       try {
@@ -57,26 +57,40 @@ const VendorListings = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDataToSend = new FormData();
-    formDataToSend.append('name', formData.name);
-    formDataToSend.append('type', formData.type);
-    formDataToSend.append('address[street]', formData.address.street);
-    formDataToSend.append('address[city]', formData.address.city);
-    formDataToSend.append('address[state]', formData.address.state);
-    formDataToSend.append('address[zip]', formData.address.zip);
-    formDataToSend.append('description', formData.description);
-    formDataToSend.append('facilities', formData.facilities.join(',')); // Join facilities array
-    formDataToSend.append('pricing', formData.pricing.toString());
-  
-    formData.images.forEach((image) => {
-      formDataToSend.append('images', image); // Append each image file
-    });
-  
+    const payload = {
+      name: formData.name,
+      type: formData.type,
+      address: formData.address,
+      description: formData.description,
+      facilities: formData.facilities,
+      pricing: formData.pricing,
+      images: formData.images,
+    };
+
+
+    // formData.images.forEach((image) => {
+    //   formDataToSend.append('images', image); // Append each image file
+    //   console.log(formDataToSend.image,"hii")
+    // });
+
     try {
-      await api.post('/listings', formDataToSend);
-      setShowCreateForm(false);
-      window.location.reload(); // Simple reload for now
-    } catch (err) {
+      const response = await api.post('/listings', payload); // Send JSON payload
+        // const listingId = response.data._id; // Get the ID of the created listing
+
+        // Handle image uploads separately after listing creation
+        // if (formData.images && formData.images.length > 0) {
+        //     const imageFormData = new FormData();
+        //     formData.images.forEach((image) => {
+        //         imageFormData.append('images', image);
+        //     });
+
+        //     await api.post(`/listings/${listingId}/images`, imageFormData);
+        // }
+
+        setShowCreateForm(false);
+        window.location.reload(); // Simple reload for now
+    }
+     catch (err) {
       console.log("this is the photot error", err);
       setError('Failed to create listing');
     }

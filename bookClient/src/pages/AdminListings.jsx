@@ -26,21 +26,35 @@ const AdminListings = () => {
 
   const handleApprove = async (listingId) => {
     try {
-      await api.put(`/listings/${listingId}`, { approved: true });
-      setListings(listings.map(listing => listing._id === listingId ? { ...listing, approved: true } : listing));
+        console.log("Approving listingId:", listingId); // Verify listingId
+        const response = await api.put(`/listings/${listingId}`, { approved: true });
+        setListings(listings.map(listing => listing._id === listingId ? { ...listing, approved: true } : listing));
     } catch (err) {
-      setError('Failed to approve listing');
+        console.error("Error approving listing:", err);
+        if(err.response){
+            console.error("backend error", err.response);
+        }
+        setError('Failed to approve listing');
     }
-  };
+};
 
-  const handleReject = async (listingId) => {
+const handleReject = async (listingId) => {
     try {
-      await api.put(`/listings/${listingId}`, { approved: false });
-      setListings(listings.map(listing => listing._id === listingId ? { ...listing, approved: false } : listing));
+        console.log("Rejecting listingId:", listingId); // Verify listingId
+        await api.put(`/listings/${listingId}`, { approved: false });
+        setListings(listings.map(listing => listing._id === listingId ? { ...listing, approved: false } : listing));
     } catch (err) {
-      setError('Failed to reject listing');
+        console.error("Error rejecting listing:", err);
+        if(err.response){
+            console.error("backend error", err.response);
+        }
+        setError('Failed to reject listing');
+        console.log("listingId", listingId);
     }
-  };
+};
+  
+  // console.log(listing   ._id )
+    
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;

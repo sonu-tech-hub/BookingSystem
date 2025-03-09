@@ -13,7 +13,7 @@ const AdminDashboard = () => {
         <nav className="mb-4">
           {/* Add links to manage listings, users, etc. */}
         </nav>
-        <Outlet /> {/* To render nested routes */}
+        {/* <Outlet /> To render nested routes */}
       </div>
     </div>
   );

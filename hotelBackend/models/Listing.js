@@ -38,7 +38,13 @@ const listingSchema = mongoose.Schema(
       type: [String],
       default: [],
     },
+    approved: {
+      type: Boolean,
+      default: undefined,
+    },
   },
+
+  
   {
     timestamps: true,
   }
