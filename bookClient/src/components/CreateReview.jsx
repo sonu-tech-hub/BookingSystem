@@ -14,7 +14,9 @@ const CreateReview = ({ onReviewCreated }) => {
         const response = await api.get('/bookings/customer');
         setBookings(response.data);
       } catch (error) {
-        setError('Failed to fetch bookings');
+        setError('Failed to fetch bookings', error);
+        console.log("errer is :",error);
+
       }
     };
     fetchBookings();

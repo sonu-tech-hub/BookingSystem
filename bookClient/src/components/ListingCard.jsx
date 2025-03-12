@@ -31,6 +31,7 @@ const ListingCard = ({ listing }) => {
           </div>
         )}
       </div>
+     
     </div>
   );
 };

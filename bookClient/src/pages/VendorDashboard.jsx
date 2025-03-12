@@ -8,7 +8,7 @@ const VendorDashboard = () => {
     <div>
       <Header />
       <div className="p-4">
-        <h1 className="text-3xl font-semibold mb-4">Vendor Dashboard</h1>
+        <h1 className="text-3xl font-semibold mb-4">Vendor  Dashboard</h1>
         {/* Navigation for vendor dashboard */}
         <nav className="mb-4">
           {/* Add links to manage listings, bookings, etc. */}

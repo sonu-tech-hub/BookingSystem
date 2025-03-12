@@ -64,6 +64,23 @@ const getListingById = asyncHandler(async (req, res) => {
     throw new Error('Listing not found');
   }
 });
+// @desc    Get all listings for a specific vendor
+// @route   GET /api/listings/vendor
+// @access  Private (Vendor)
+const getVendorListings = asyncHandler(async (req, res) => {
+  const vendorId = req.user._id; // Get the vendor ID from the authenticated user
+  
+  // Find all listings for this specific vendor
+  const listings = await Listing.find({ vendorId });
+
+  if (listings) {
+    res.json(listings);
+  } else {
+    res.status(404);
+    throw new Error('No listings found for this vendor');
+  }
+});
+
 
 // @desc    Search listings by name
 // @route   GET /api/listings/search
@@ -187,5 +204,6 @@ module.exports = {
   updateListing,
   deleteListing,
   FilterData,
-  getListingById
+  getListingById,
+  getVendorListings
 };

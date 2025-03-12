@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import api from '../utils/api';
 
+
 const ListingDetailsPage = () => {
   const { id } = useParams();
   const [listing, setListing] = useState(null);
@@ -77,6 +78,7 @@ const ListingDetailsPage = () => {
           </div>
         </div>
       </div>
+      
     </div>
   );
 };

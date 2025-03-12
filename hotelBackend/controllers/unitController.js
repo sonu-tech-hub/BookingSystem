@@ -82,27 +82,34 @@ const updateUnit = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Delete a unit
-// @route   DELETE /api/units/unit/:id
-// @access  Private (Vendor)
 const deleteUnit = asyncHandler(async (req, res) => {
+  // Find the unit by its ID
   const unit = await Unit.findById(req.params.id);
 
-  if (unit) {
-    // Verify the listing belongs to the vendor
-    const listing = await Listing.findById(unit.listingId);
-    if (!listing || listing.vendorId.toString() !== req.user._id.toString()) {
-      res.status(401);
-      throw new Error('Unauthorized to delete this unit');
-    }
-
-    await unit.remove();
-    res.json({ message: 'Unit removed' });
-  } else {
+  if (!unit) {
     res.status(404);
     throw new Error('Unit not found');
   }
+
+  // Verify the listing belongs to the vendor
+  const listing = await Listing.findById(unit.listingId);
+  if (!listing || listing.vendorId.toString() !== req.user._id.toString()) {
+    res.status(401);
+    throw new Error('Unauthorized to delete this unit');
+  }
+
+  // Use deleteOne instead of remove
+  const deletedUnit = await Unit.deleteOne({ _id: req.params.id });
+
+  if (deletedUnit.deletedCount === 0) {
+    res.status(500);
+    throw new Error('Failed to delete unit');
+  }
+
+  res.json({ message: 'Unit removed' });
 });
+
+
 
 module.exports = {
   createUnit,

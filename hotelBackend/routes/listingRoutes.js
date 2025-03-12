@@ -39,6 +39,7 @@ const {
   deleteListing,
   FilterData,
   getListingById,
+  getVendorListings
 } = require('../controllers/listingController');
 const { protect, vendor,admin } = require('../middleware/authMiddleware');
 router.get('/search', searchListings);
@@ -54,6 +55,7 @@ router
 
 router.route('/:id').put(protect, vendor,admin, updateListing);
 router.route('/:id').delete(protect, vendor,admin, deleteListing);
+router.route('/vendor').get( protect, vendor, getVendorListings);
 
 
 module.exports = router;
