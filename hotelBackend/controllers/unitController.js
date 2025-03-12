@@ -99,7 +99,7 @@ const deleteUnit = asyncHandler(async (req, res) => {
   }
 
   // Use deleteOne instead of remove
-  const deletedUnit = await Unit.deleteOne({ _id: req.params.id });
+  const deletedUnit = await Unit.findByIdAndDelete({ _id: req.params.id });
 
   if (deletedUnit.deletedCount === 0) {
     res.status(500);

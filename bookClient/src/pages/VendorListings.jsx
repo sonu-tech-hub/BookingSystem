@@ -5,6 +5,7 @@ import ListingCard from '../components/ListingCard';
 import ImageUpload from '../components/ImageUpload';
 import UnitList from '../components/unitModel';
 import DeleteUnit from '../components/deleteUnit';
+import DeleteListing from '../components/deleteListing';
 
 const VendorListings = () => {
   const [listings, setListings] = useState([]);
@@ -111,7 +112,7 @@ const VendorListings = () => {
       <button onClick={() => setShowCreateForm(true)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">
         Create Listing
       </button>
-     
+     <p className='inline-block'> <DeleteListing/></p>
       <p className='inline-block'><UnitList/> </p>
       <p className='inline-block'> <DeleteUnit/></p>
       {showCreateForm && (

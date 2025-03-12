@@ -186,16 +186,26 @@ const updateListing = asyncHandler(async (req, res) => {
 // @route   DELETE /api/listings/:id
 // @access  Private (Vendor)
 const deleteListing = asyncHandler(async (req, res) => {
-  const listing = await Listing.findByIdAndDelete(req.params.id);
+  // Find and delete the listing by its ID
+  const listing = await Listing.findById(req.params.id);
 
-  if (listing && listing.vendorId.toString() === req.user._id.toString()) {
-    await listing.remove();
-    res.json({ message: 'Listing removed' });
-  } else {
+  if (!listing) {
     res.status(404);
-    throw new Error('Listing not found or unauthorized');
+    throw new Error('Listing not found');
   }
+
+  // Verify the listing belongs to the vendor
+  if (listing.vendorId.toString() !== req.user._id.toString()) {
+    res.status(401);
+    throw new Error('Unauthorized to delete this listing');
+  }
+
+  // Use findByIdAndDelete to remove the listing
+  await listing.findByIdAndDelete({ _id: req.params.id });
+
+  res.json({ message: 'Listing removed' });
 });
+
 
 module.exports = {
   createListing,
