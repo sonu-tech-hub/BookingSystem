@@ -185,6 +185,9 @@ const updateListing = asyncHandler(async (req, res) => {
 // @desc    Delete a listing
 // @route   DELETE /api/listings/:id
 // @access  Private (Vendor)
+// @desc    Delete a listing
+// @route   DELETE /api/listings/:id
+// @access  Private (Vendor)
 const deleteListing = asyncHandler(async (req, res) => {
   // Find and delete the listing by its ID
   const listing = await Listing.findById(req.params.id);
@@ -200,12 +203,11 @@ const deleteListing = asyncHandler(async (req, res) => {
     throw new Error('Unauthorized to delete this listing');
   }
 
-  // Use findByIdAndDelete to remove the listing
-  await listing.findByIdAndDelete({ _id: req.params.id });
+  // Delete the listing using findByIdAndDelete
+  await Listing.findByIdAndDelete(req.params.id);
 
   res.json({ message: 'Listing removed' });
 });
-
 
 module.exports = {
   createListing,

@@ -43,28 +43,32 @@ const DeleteUnit = () => {
 
   // Handle deletion of unit
   const handleDelete = async () => {
-    if (!selectedUnitId) {
-      setError('Please select a unit to delete');
+    if (!selectedListingId) {
+      setError('Please select a listing to delete');
       return;
     }
-
+  
     try {
-      // Adjust the API endpoint if needed
-      const response = await api.delete(`/units/unit/${selectedUnitId}`);
-
+      // Delete the listing
+      const response = await api.delete(`/listings/${selectedListingId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+  
       if (response.status === 200) {
-        setSuccessMessage('Unit deleted successfully!');
-        setSelectedUnitId('');
-        setUnits([]); // Clear units
-        setError('');
+        setSuccessMessage('Listing and all associated units deleted successfully!');
+        setSelectedListingId(''); // Clear selected listing
+        setError(''); // Clear any errors
       } else {
-        setError('Failed to delete unit');
+        setError('Failed to delete listing');
       }
     } catch (err) {
-      setError('Error deleting unit');
-      console.error('Error deleting unit:', err);
+      setError('Error deleting listing');
+      console.error('Error deleting listing:', err);
     }
   };
+  
 
   return (
     <div>

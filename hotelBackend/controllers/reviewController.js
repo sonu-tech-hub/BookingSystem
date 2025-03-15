@@ -48,6 +48,8 @@ const getReviewsByCustomer = asyncHandler(async (req, res) => {
 // @desc    Get all reviews for a listing
 // @route   GET /api/reviews/:listingId
 // @access  Public
+// server/controllers/reviewController.js
+
 const getReviewsByListing = asyncHandler(async (req, res) => {
   const listingId = req.params.listingId;
 
@@ -57,11 +59,14 @@ const getReviewsByListing = asyncHandler(async (req, res) => {
   // Extract booking IDs
   const bookingIds = bookings.map((booking) => booking._id);
 
-  // Find reviews for those booking IDs
-  const reviews = await Review.find({ bookingId: { $in: bookingIds } });
+  // Find reviews for those booking IDs and populate customerId field with name
+  const reviews = await Review.find({ bookingId: { $in: bookingIds } })
+    .populate('customerId', 'name');  // Populate the customerId field with the 'name' field
 
   res.json(reviews);
 });
+
+
 
 module.exports = {
   createReview,

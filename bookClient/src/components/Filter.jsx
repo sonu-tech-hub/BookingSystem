@@ -1,14 +1,12 @@
-// client/src/components/FilterComponent.js
 import React, { useState, useEffect } from "react";
 import api from "../utils/api";
 
 const FilterComponent = () => {
   const [location, setLocation] = useState("");
-  const [minPrice, setMinPrice] = useState(""); // Changed to minPrice
+  const [minPrice, setMinPrice] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  console.log(location, minPrice);
 
   const fetchFilteredData = async () => {
     setLoading(true);
@@ -18,7 +16,7 @@ const FilterComponent = () => {
       const response = await api.get("/listings/filter", {
         params: {
           location,
-          minPrice, // Only location and minPrice
+          minPrice,
         },
       });
 
@@ -27,24 +25,25 @@ const FilterComponent = () => {
     } catch (err) {
       console.error("Error:", err);
       setError("Something went wrong. Please try again.");
-      console.log("this is the error", err);
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchFilteredData();
-  }, [location, minPrice]); // Only location and minPrice
+    if (location || minPrice) {
+      fetchFilteredData();
+    }
+  }, [location, minPrice]);
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-2xl font-bold text-center mb-6">Filter Options</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">Filters</h2>
 
       {/* Filter Form */}
       <div className="space-y-6">
         <div className="flex flex-wrap gap-4 justify-between">
           {/* Location Filter */}
-          <div className="w-full sm:w-1/3 lg:w-1/4">
+          <div className="w-full sm:w-1/2 lg:w-1/3">
             <label htmlFor="location" className="block text-lg mb-2">
               Location
             </label>
@@ -55,15 +54,15 @@ const FilterComponent = () => {
               className="w-full p-2 border rounded-md shadow-sm"
             >
               <option value="">Select Location</option>
-              <option value="mathura">mathura</option>
-              <option value="up">up</option>
+              <option value="mathura">Mathura</option>
+              <option value="up">U.P.</option>
               <option value="Chicago">Chicago</option>
               <option value="San Francisco">San Francisco</option>
             </select>
           </div>
 
-          {/* Min Price Filter (Input) */}
-          <div className="w-full sm:w-1/3 lg:w-1/4">
+          {/* Min Price Filter */}
+          <div className="w-full sm:w-1/2 lg:w-1/3">
             <label htmlFor="minPrice" className="block text-lg mb-2">
               Min Price
             </label>
@@ -73,7 +72,7 @@ const FilterComponent = () => {
               value={minPrice}
               onChange={(e) => setMinPrice(e.target.value)}
               className="w-full p-2 border rounded-md shadow-sm"
-              placeholder="Enter minimum price"
+              placeholder="Min Price"
             />
           </div>
         </div>
@@ -85,20 +84,23 @@ const FilterComponent = () => {
 
       {/* Displaying Filtered Results */}
       <div className="mt-6">
-        {results.length > 0 ? (
-          <ul className="space-y-4">
-            {results.map((item, index) => (
-              <li key={index} className="border-b py-4">
-                <h3 className="font-bold text-xl">{item.name}</h3>
-                <p>{item.address.city}</p>
-                <p>${item.pricing}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          !loading && <p className="text-center text-gray-500">No results found.</p>
-        )}
-      </div>
+  {results.length > 0 ? (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {results.map((item, index) => (
+        <div key={index} className="border rounded-lg overflow-hidden shadow-md p-6">
+          <h3 className="font-semibold text-xl mb-2">{item.name}</h3>
+          <p className="text-sm text-gray-600 mb-2">{item.address.city}</p>
+          <p className="font-medium text-lg text-gray-800">${item.pricing}</p>
+        </div>
+      ))}
+    </div>
+  ) : (
+    !loading && (
+      <p className="text-center text-gray-500">No results found.</p>
+    )
+  )}
+</div>
+
     </div>
   );
 };

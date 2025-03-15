@@ -102,37 +102,67 @@ const BookingForm = ({ listingId, setShowBookingForm }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-4 bg-green-200 m-2 rounded">
-      {loading && <div>Loading...</div>}
-      {error && <div>Error: {error}</div>}
+      {loading && <div className="text-center text-blue-500">Loading...</div>}
+      {error && <div className="text-center text-red-500">{error}</div>}
       <form onSubmit={handleSubmit}>
-        {/* Form content */}
-        <div className="flex flex-row justify-between items-center m-3">
-          <label htmlFor="unitId">Unit:</label>
-          <select name="unitId" value={formData.unitId} onChange={handleChange} required>
+        {/* Unit Selection */}
+        <div className="flex flex-wrap gap-4 justify-between items-center mb-4">
+          <label htmlFor="unitId" className="w-full sm:w-1/3">Unit:</label>
+          <select
+            name="unitId"
+            value={formData.unitId}
+            onChange={handleChange}
+            required
+            className="w-full sm:w-2/3 p-2 border rounded-md shadow-sm"
+          >
             <option value="">Select Unit</option>
             {units.map((unit) => (
               <option key={unit._id} value={unit._id}>
-                {unit.type} - Capacity: {unit.capacity} - Price: {unit.price}
+                {unit.type} - Capacity: {unit.capacity} - Price: ${unit.price}
               </option>
             ))}
           </select>
         </div>
 
-        <div className=" justify-between items-center m-2">
-          <label>Booking Dates: <FaCalendarAlt className="inline ml-1" /></label>
-          <input type="date" onChange={handleDateChange} />
-          <p className="ml-2 mt-2">Selected Dates: {selectedDates.join(', ')}</p>
+        {/* Date Selection */}
+        <div className="mb-4">
+          <label className="block text-lg">Booking Dates: <FaCalendarAlt className="inline ml-1" /></label>
+          <input
+            type="date"
+            onChange={handleDateChange}
+            className="w-full p-2 border rounded-md shadow-sm"
+          />
+          <p className="mt-2">Selected Dates: {selectedDates.join(', ')}</p>
         </div>
 
-        <div className=" justify-between items-center m-2">
-          <label htmlFor="bookingTime">Booking Time: <FaClock className="inline ml-1" /></label>
-          <input type="datetime-local" name="bookingTime" value={formData.bookingTime} onChange={handleChange} />
+        {/* Time Selection */}
+        <div className="mb-4">
+          <label htmlFor="bookingTime" className="block text-lg">Booking Time: <FaClock className="inline ml-1" /></label>
+          <input
+            type="datetime-local"
+            name="bookingTime"
+            value={formData.bookingTime}
+            onChange={handleChange}
+            className="w-full p-2 border rounded-md shadow-sm"
+          />
         </div>
 
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
-        <button type="button" onClick={handleCancelClick} className="ml-2 bg-gray-300 px-4 py-2 rounded">
-          <FaTimes className="inline mr-1" /> Cancel
-        </button>
+        {/* Submit and Cancel Buttons */}
+        <div className="flex justify-between gap-4">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            onClick={handleCancelClick}
+            className="ml-2 bg-gray-300 px-4 py-2 rounded w-full sm:w-auto"
+          >
+            <FaTimes className="inline mr-1" /> Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

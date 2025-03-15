@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import api from '../utils/api';
+import Reviews from '../components/ReviewForm';
 
 
 const ListingDetailsPage = () => {
@@ -74,6 +75,7 @@ const ListingDetailsPage = () => {
               ))}
             </ul>
             <p className="text-lg font-semibold">Price: ${listing.pricing}</p>
+            <p className='text-lg font-semibold'><Reviews/> </p>
             {/* Add booking functionality here */}
           </div>
         </div>
